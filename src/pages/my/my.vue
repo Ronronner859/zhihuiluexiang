@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { useMemberStore } from '@/stores'
-import '@/utils/http'
+
+import { http } from '@/utils/http'
+import { h } from 'vue'
 const memberStore = useMemberStore()
-const getData = () => {
-    uni.request({
-      method:'GET',
-      url:'/home/banner',
-    })
+// TODO:http
+const getData = async () => {
+  //! 异步
+  const res = await http<string[]>({
+    method: 'GET',
+    url: '',
+    header: {},
+  })
+
+  console.log('请求成功', res.code)
 }
 </script>
 
@@ -17,7 +24,7 @@ const getData = () => {
       @tap="
         memberStore.setProfile({
           nickname: 'hello world',
-          token:'12345'
+          token: '12345',
         })
       "
       size="mini"
@@ -28,7 +35,6 @@ const getData = () => {
     </button>
     <button @tap="memberStore.clearProfile()" size="mini" plain type="warn">清理用户信息</button>
     <button @tap="getData()" size="mini" plain type="warn">测试请求</button>
-
   </view>
 </template>
 
