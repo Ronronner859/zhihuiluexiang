@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 const activeIndex = ref(0)
+// * UniHelper.SwiperOnChange 提供事件类型
 const onChange: UniHelper.SwiperOnChange = (e) => {
   // !排除undefined 非空断言
   activeIndex.value = e.detail!.current

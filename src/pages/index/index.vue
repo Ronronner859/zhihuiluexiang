@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import ZhyfSwiper from '@/components/ZhyfSwiper.vue'
 import CustomNavbar from './components/CustomNavbar.vue'
+import { getHomeBannerApi } from '@/services/home'
+import { onLoad } from '@dcloudio/uni-app'
+// 保存轮播图的数据
+const BannerList = ref([])
+const getHomeBannerData = async () => {
+  const res = await getHomeBannerApi()
+  // (property) Data<unknown>.result: unknown
+  BannerList.value = res.result
+}
+// 页面加载的时候
+onLoad(() => {
+  getHomeBannerData()
+})
 </script>
 
 <template>
