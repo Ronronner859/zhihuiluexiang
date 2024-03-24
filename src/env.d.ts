@@ -6,3 +6,6 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+declare module '@overseafront/http-request'
+declare module '@atom/ainvest-tokens'
