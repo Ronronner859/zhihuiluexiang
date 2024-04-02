@@ -6,17 +6,23 @@ import { getHomeBannerApi } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
 import type { BannerItem } from '@/types/home'
 import { ref } from 'vue'
-// 保存轮播图的数据
+import { getHomeCategoryApi } from '../../services/home'
+// 获取轮播图的数据
 const BannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerApi()
   // (property) Data<unknown>.result: unknown
   BannerList.value = res.result
 }
-// 页面加载的时候 onLoad加载
+// 页面加载的时候 onLoad加载 相当于mounted
 onLoad(() => {
   getHomeBannerData()
+  getHomeCategoryApi()
 })
+// 获取前台分类的数据
+const CategoryList = async () => {
+  const res = await getHomeCategoryApi()
+}
 </script>
 
 <template>
