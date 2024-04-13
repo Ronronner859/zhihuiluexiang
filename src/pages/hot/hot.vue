@@ -19,7 +19,7 @@ uni.setNavigationBarTitle({ title: currentHotMap!.title })
 // 获取热门推荐数据
 const getHotCommandData = async () => {
   const res = await getHotRecommendAPI(currentHotMap!.url)
-  console.log('res', res)
+  console.log('res', res.result.title)
 }
 onLoad(() => {
   getHotCommandData()
