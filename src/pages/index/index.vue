@@ -46,21 +46,19 @@ onLoad(() => {
 </script>
 
 <template>
-  <div>
-    <!-- 导航栏 -->
-    <CustomNavbar />
-    <!-- 滚动栏 -->
-    <scroll-view class="scroll-view" scroll-y>
-      <!-- 轮播图 -->
-      <ZhyfSwiper :list="BannerList" />
-      <!-- 分类面板 -->
-      <CategoryPanel :list="CategoryList" />
-      <!-- 热门推荐 -->
-      <HotPanel :list="HotList" />
-      <!-- 猜你喜欢 -->
-      <XtxGuess />
-    </scroll-view>
-  </div>
+  <!-- 导航栏 -->
+  <CustomNavbar />
+  <!-- 滚动栏 -->
+  <scroll-view class="scroll-view" scroll-y>
+    <!-- 轮播图 -->
+    <ZhyfSwiper :list="BannerList" />
+    <!-- 分类面板 -->
+    <CategoryPanel :list="CategoryList" />
+    <!-- 热门推荐 -->
+    <HotPanel :list="HotList" />
+    <!-- 猜你喜欢 -->
+    <XtxGuess />
+  </scroll-view>
 </template>
 
 <style lang="scss">
