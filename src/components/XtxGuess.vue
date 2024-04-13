@@ -5,15 +5,27 @@ import type { GuessItem } from '@/types/home'
 import type { PageParams } from '@/types/global'
 // 分页参数
 const pagesParams: Required<PageParams> = {
-  page: 1,
+  page: 30,
   pageSize: 10,
 }
+const finsh = ref(false)
 const guessList = ref<GuessItem[]>([])
 const getHomeLikeData = async () => {
+  if (finsh.value === true) {
+    return uni.showToast({
+      title: '没有更多数据了',
+      icon: 'success',
+      mask: true,
+    })
+  }
   const res = await getHomeLikeApi(pagesParams)
   // guessList.value = res.result.items
   guessList.value.push(...res.result.items)
-  pagesParams.page++
+  if (pagesParams.page < res.result.pages) {
+    pagesParams.page++
+  } else {
+    finsh.value = true
+  }
 }
 onMounted(() => {
   getHomeLikeData()
@@ -43,7 +55,7 @@ defineExpose({
       </view>
     </navigator>
   </view>
-  <view class="loading-text"> 正在加载... </view>
+  <view class="loading-text"> {{ finsh ? '没有更多数据了~' : '正在加载...' }} </view>
 </template>
 
 <style lang="scss">
