@@ -2,27 +2,46 @@
 import ZhyfSwiper from '@/components/ZhyfSwiper.vue'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
-import { getHomeBannerApi } from '@/services/home'
+import HotPanel from './components/HotPanel.vue'
+import { getHomeBannerApi, getHomeHotApi } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
-import type { BannerItem } from '@/types/home'
+import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { ref } from 'vue'
 import { getHomeCategoryApi } from '../../services/home'
+// import { CategoryItem } from '../../types/home'
 // 获取轮播图的数据
 const BannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerApi()
   // (property) Data<unknown>.result: unknown
   BannerList.value = res.result
+  console.log(BannerList.value)
 }
+
+// 获取前台分类的数据
+const CategoryList = ref<CategoryItem[]>([])
+const getCategoryList = async () => {
+  const res = await getHomeCategoryApi()
+  console.log('result:', res.result)
+  CategoryList.value = res.result
+  console.log(CategoryList.value)
+}
+
+// 热门推荐
+const HotList = ref<HotItem[]>([])
+const getHomeHotData = async () => {
+  const res = await getHomeHotApi()
+  console.log(res.result)
+
+  HotList.value = res.result
+}
+
 // 页面加载的时候 onLoad加载 相当于mounted
 onLoad(() => {
   getHomeBannerData()
-  getHomeCategoryApi()
+  getCategoryList()
+  getHomeHotData()
 })
-// 获取前台分类的数据
-const CategoryList = async () => {
-  const res = await getHomeCategoryApi()
-}
 </script>
 
 <template>
@@ -32,7 +51,9 @@ const CategoryList = async () => {
     <!-- 轮播图 -->
     <ZhyfSwiper :list="BannerList" />
     <!-- 分类面板 -->
-    <CategoryPanel />
+    <CategoryPanel :list="CategoryList" />
+    <!-- 热门推荐 -->
+    <HotPanel :list="HotList" />
     <view class="index"></view>
   </div>
 </template>

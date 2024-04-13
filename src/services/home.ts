@@ -1,4 +1,4 @@
-import type { BannerItem } from '@/types/home'
+import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { http } from '@/utils/http'
 /**
  * 首页广告区域数据
@@ -18,8 +18,18 @@ export const getHomeBannerApi = (distributionSite = 1) => {
  * 前台首页分类
  */
 export const getHomeCategoryApi = () => {
-  return http({
+  return http<CategoryItem[]>({
     method: 'GET',
     url: '/home/category/mutli',
+  })
+}
+
+/**
+ * 热门推荐
+ */
+export const getHomeHotApi = () => {
+  return http<HotItem[]>({
+    method: 'GET',
+    url: '/home/hot/mutli',
   })
 }
