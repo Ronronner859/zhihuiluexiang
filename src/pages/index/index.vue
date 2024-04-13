@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ZhyfSwiper from '@/components/ZhyfSwiper.vue'
+// import XtxGuess from './components/XtxGuess.vue'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
@@ -48,18 +49,28 @@ onLoad(() => {
   <div>
     <!-- 导航栏 -->
     <CustomNavbar />
-    <!-- 轮播图 -->
-    <ZhyfSwiper :list="BannerList" />
-    <!-- 分类面板 -->
-    <CategoryPanel :list="CategoryList" />
-    <!-- 热门推荐 -->
-    <HotPanel :list="HotList" />
-    <view class="index"></view>
+    <!-- 滚动栏 -->
+    <scroll-view class="scroll-view" scroll-y>
+      <!-- 轮播图 -->
+      <ZhyfSwiper :list="BannerList" />
+      <!-- 分类面板 -->
+      <CategoryPanel :list="CategoryList" />
+      <!-- 热门推荐 -->
+      <HotPanel :list="HotList" />
+      <!-- 猜你喜欢 -->
+      <XtxGuess />
+    </scroll-view>
   </div>
 </template>
 
 <style lang="scss">
 page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: #f7f7f7;
+}
+.scroll-view {
+  flex: 1;
 }
 </style>
