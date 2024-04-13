@@ -39,8 +39,18 @@ const getHomeHotData = async () => {
 }
 const guessRef = ref<XtxGuessInstance>()
 const onScrolltolower = () => {
-  console.log(11)
   guessRef.value?.getMore()
+}
+// 下拉刷新
+const istriggered = ref(false)
+const onRefresherrefresh = async () => {
+  istriggered.value = true
+  // await getHomeBannerData()
+  // await getCategoryList()
+  // await getHomeHotData()
+  // TODO: Promise.all
+  await Promise.all([getHomeBannerApi(), getCategoryList(), getHomeHotData()])
+  istriggered.value = false
 }
 // 页面加载的时候 onLoad加载 相当于mounted
 onLoad(() => {
@@ -54,7 +64,14 @@ onLoad(() => {
   <!-- 导航栏 -->
   <CustomNavbar />
   <!-- 滚动栏 -->
-  <scroll-view @scrolltolower="onScrolltolower" class="scroll-view" scroll-y>
+  <scroll-view
+    refresher-enabled
+    :refresher-triggered="istriggered"
+    @refresherrefresh="onRefresherrefresh"
+    @scrolltolower="onScrolltolower"
+    class="scroll-view"
+    scroll-y
+  >
     <!-- 轮播图 -->
     <ZhyfSwiper :list="BannerList" />
     <!-- 分类面板 -->
