@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { BannerItem } from '../types/home'
+import type { BannerItem } from '@/types/home'
 
 const activeIndex = ref(0)
 // * UniHelper.SwiperOnChange 提供事件类型

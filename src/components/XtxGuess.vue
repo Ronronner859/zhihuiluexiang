@@ -10,6 +10,9 @@ const getHomeLikeData = async () => {
 onMounted(() => {
   getHomeLikeData()
 })
+defineExpose({
+  getMore: getHomeLikeData,
+})
 </script>
 
 <template>

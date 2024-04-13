@@ -9,6 +9,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { ref } from 'vue'
 import { getHomeCategoryApi } from '../../services/home'
+import type { XtxGuessInstance } from '@/types/component'
 // import { CategoryItem } from '../../types/home'
 // 获取轮播图的数据
 const BannerList = ref<BannerItem[]>([])
@@ -36,7 +37,11 @@ const getHomeHotData = async () => {
 
   HotList.value = res.result
 }
-
+const guessRef = ref<XtxGuessInstance>()
+const onScrolltolower = () => {
+  console.log(11)
+  guessRef.value?.getMore()
+}
 // 页面加载的时候 onLoad加载 相当于mounted
 onLoad(() => {
   getHomeBannerData()
@@ -49,7 +54,7 @@ onLoad(() => {
   <!-- 导航栏 -->
   <CustomNavbar />
   <!-- 滚动栏 -->
-  <scroll-view class="scroll-view" scroll-y>
+  <scroll-view @scrolltolower="onScrolltolower" class="scroll-view" scroll-y>
     <!-- 轮播图 -->
     <ZhyfSwiper :list="BannerList" />
     <!-- 分类面板 -->
@@ -57,7 +62,7 @@ onLoad(() => {
     <!-- 热门推荐 -->
     <HotPanel :list="HotList" />
     <!-- 猜你喜欢 -->
-    <XtxGuess />
+    <XtxGuess ref="guessRef" />
   </scroll-view>
 </template>
 
