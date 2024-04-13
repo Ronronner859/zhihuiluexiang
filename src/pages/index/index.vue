@@ -4,6 +4,7 @@ import ZhyfSwiper from '@/components/ZhyfSwiper.vue'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
+import PageSkeleton from './components/PageSkeleton.vue'
 import { getHomeBannerApi, getHomeHotApi } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
@@ -58,11 +59,14 @@ const onRefresherrefresh = async () => {
   ])
   istriggered.value = false
 }
+// 是否加载中
+const isLoading = ref(false)
+
 // 页面加载的时候 onLoad加载 相当于mounted
-onLoad(() => {
-  getHomeBannerData()
-  getCategoryList()
-  getHomeHotData()
+onLoad(async () => {
+  isLoading.value = true
+  await Promise.all([getHomeBannerData(), getCategoryList(), getHomeHotData()])
+  isLoading.value = false
 })
 </script>
 
@@ -78,14 +82,17 @@ onLoad(() => {
     class="scroll-view"
     scroll-y
   >
-    <!-- 轮播图 -->
-    <ZhyfSwiper :list="BannerList" />
-    <!-- 分类面板 -->
-    <CategoryPanel :list="CategoryList" />
-    <!-- 热门推荐 -->
-    <HotPanel :list="HotList" />
-    <!-- 猜你喜欢 -->
-    <XtxGuess ref="guessRef" />
+    <PageSkeleton v-if="isLoading" />
+    <template v-else>
+      <!-- 轮播图 -->
+      <ZhyfSwiper :list="BannerList" />
+      <!-- 分类面板 -->
+      <CategoryPanel :list="CategoryList" />
+      <!-- 热门推荐 -->
+      <HotPanel :list="HotList" />
+      <!-- 猜你喜欢 -->
+      <XtxGuess ref="guessRef" />
+    </template>
   </scroll-view>
 </template>
 
