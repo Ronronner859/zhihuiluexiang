@@ -2,10 +2,18 @@
 import { getHomeLikeApi } from '@/services/home'
 import { onMounted, ref } from 'vue'
 import type { GuessItem } from '@/types/home'
+import type { PageParams } from '@/types/global'
+// 分页参数
+const pagesParams: Required<PageParams> = {
+  page: 1,
+  pageSize: 10,
+}
 const guessList = ref<GuessItem[]>([])
 const getHomeLikeData = async () => {
-  const res = await getHomeLikeApi()
-  guessList.value = res.result.items
+  const res = await getHomeLikeApi(pagesParams)
+  // guessList.value = res.result.items
+  guessList.value.push(...res.result.items)
+  pagesParams.page++
 }
 onMounted(() => {
   getHomeLikeData()
