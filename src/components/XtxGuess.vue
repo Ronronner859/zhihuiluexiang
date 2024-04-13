@@ -19,6 +19,7 @@ const getHomeLikeData = async () => {
     })
   }
   const res = await getHomeLikeApi(pagesParams)
+
   // guessList.value = res.result.items
   guessList.value.push(...res.result.items)
   if (pagesParams.page < res.result.pages) {
@@ -27,10 +28,16 @@ const getHomeLikeData = async () => {
     finsh.value = true
   }
 }
+const resetData = () => {
+  pagesParams.page = 1
+  guessList.value = []
+  finsh.value = false
+}
 onMounted(() => {
   getHomeLikeData()
 })
 defineExpose({
+  resetData,
   getMore: getHomeLikeData,
 })
 </script>

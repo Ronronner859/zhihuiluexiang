@@ -49,7 +49,13 @@ const onRefresherrefresh = async () => {
   // await getCategoryList()
   // await getHomeHotData()
   // TODO: Promise.all
-  await Promise.all([getHomeBannerApi(), getCategoryList(), getHomeHotData()])
+  guessRef.value?.resetData()
+  await Promise.all([
+    getHomeBannerApi(),
+    getCategoryList(),
+    getHomeHotData(),
+    guessRef.value?.getMore(),
+  ])
   istriggered.value = false
 }
 // 页面加载的时候 onLoad加载 相当于mounted
