@@ -15,10 +15,17 @@ const getData = async () => {
 
   console.log('请求成功', res.code)
 }
+const onLogin = () => {
+  // 在 onLogin 事件处理函数中，使用小程序的路由跳转功能跳转到登录页面
+  wx.navigateTo({
+    url: '/pages/login/login', // 假设登录页面的路径为 '/pages/login/login'
+  })
+}
 </script>
 
 <template>
   <view class="my">
+    <button @tap="onLogin" size="default">登录</button>
     <view>会员信息：{{ memberStore.profile }}</view>
     <button
       @tap="
