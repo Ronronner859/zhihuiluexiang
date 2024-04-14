@@ -24,10 +24,14 @@ const bannerPicture = ref('')
 const titleLift = ref('')
 const titleRight = ref('')
 const goodsItem = ref<GoodsItem[]>([])
-const subTypes = ref<SubTypeItem[]>([])
+const subTypes = ref<(SubTypeItem & { finish?: boolean })[]>([])
 // 获取热门推荐数据
 const getHotCommandData = async () => {
-  const res = await getHotRecommendAPI(currentHotMap!.url)
+  const res = await getHotRecommendAPI(currentHotMap!.url, {
+    // 通过环境变量
+    page: import.meta.env.DEV ? 30 : 1,
+    pageSize: 10,
+  })
   console.log('res', res.result.title)
   bannerPicture.value = res.result.bannerPicture
   titleLift.value = res.result.subTypes[0].title
@@ -41,7 +45,13 @@ onLoad(() => {
 // 滚动处理
 const onScrolltolower = async () => {
   const currentsubTypes = subTypes.value[activeIndex.value]
-  currentsubTypes.goodsItems.page++
+  if (currentsubTypes.goodsItems.page < currentsubTypes.goodsItems.pages) {
+    currentsubTypes.goodsItems.page++
+  } else {
+    currentsubTypes.finish = true
+    return uni.showToast({ icon: 'fail', title: '没有更多数据了' })
+  }
+
   const res = await getHotRecommendAPI(currentHotMap!.url, {
     subType: currentsubTypes.id,
     page: currentsubTypes.goodsItems.page,
@@ -94,7 +104,7 @@ const onScrolltolower = async () => {
           </view>
         </navigator>
       </view>
-      <view class="loading-text">正在加载...</view>
+      <view class="loading-text">{{ item.finish ? '没有更多数据了' : '正在加载...' }}</view>
     </scroll-view>
   </view>
 </template>
