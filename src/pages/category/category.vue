@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import ZhyfSwiper from '@/components/ZhyfSwiper.vue'
+import { getCategoryTopAPI } from '@/services/category'
 import { getHomeBannerApi } from '@/services/home'
-import type { BannerItem } from '@/types/home'
+import type { CategoryTopItem } from '@/types/category'
+import type { BannerItem, CategoryItem } from '@/types/home'
 import { onLoad } from '@dcloudio/uni-app'
 import { onMounted, ref } from 'vue'
 // 轮播图
@@ -10,8 +12,17 @@ const getBannerList = async () => {
   const res = await getHomeBannerApi(2)
   bannerList.value = res.result
 }
+//分类
+const categoryList = ref<CategoryTopItem[]>([])
+const activeIndex = ref(0)
+const getCategoryList = async () => {
+  const res = await getCategoryTopAPI()
+  categoryList.value = res.result
+}
+
 onLoad(() => {
   getBannerList()
+  getCategoryList()
 })
 </script>
 
@@ -27,8 +38,14 @@ onLoad(() => {
     <view class="categories">
       <!-- 左侧：一级分类 -->
       <scroll-view class="primary" scroll-y>
-        <view v-for="(item, index) in 10" :key="item" class="item" :class="{ active: index === 0 }">
-          <text class="name"> 居家 </text>
+        <view
+          v-for="(item, index) in categoryList"
+          :key="item.id"
+          class="item"
+          :class="{ active: index === activeIndex }"
+          @tap="activeIndex = index"
+        >
+          <text class="name"> {{ item.name }}</text>
         </view>
       </scroll-view>
       <!-- 右侧：二级分类 -->
