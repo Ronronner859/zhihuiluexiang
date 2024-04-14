@@ -38,6 +38,18 @@ const getHotCommandData = async () => {
 onLoad(() => {
   getHotCommandData()
 })
+// 滚动处理
+const onScrolltolower = async () => {
+  const currentsubTypes = subTypes.value[activeIndex.value]
+  currentsubTypes.goodsItems.page++
+  const res = await getHotRecommendAPI(currentHotMap!.url, {
+    subType: currentsubTypes.id,
+    page: currentsubTypes.goodsItems.page,
+    pageSize: currentsubTypes.goodsItems.pageSize,
+  })
+  const newSubTypes = res.result.subTypes[activeIndex.value]
+  currentsubTypes.goodsItems.items.push(...newSubTypes.goodsItems.items)
+}
 </script>
 
 <template>
@@ -64,6 +76,7 @@ onLoad(() => {
       v-for="(item, index) in subTypes"
       :key="item.id"
       v-show="activeIndex === index"
+      @scrolltolower="onScrolltolower"
     >
       <view class="goods">
         <navigator
